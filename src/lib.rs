@@ -6,8 +6,8 @@ mod utils;
 
 use cfg_if::cfg_if;
 use wasm_bindgen::prelude::*;
-use pusoy_dos2::game::Game;
-use pusoy_dos2::cards::Suit;
+use pusoy_dos2::game::{Game, Hand};
+use pusoy_dos2::cards::{Suit, PlayedCard};
 
 cfg_if! {
     // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -51,3 +51,17 @@ pub fn get_player(game: &Game, id: &str) -> JsValue {
 }
 
 
+#[wasm_bindgen]
+pub fn get_hand_type(js_hand: &JsValue) -> JsValue {
+
+    let cards: Vec<PlayedCard> = js_hand
+        .into_serde().unwrap();
+
+    let hand = Hand::build(cards);
+
+    match hand {
+        Some(h) => JsValue::from_serde(&h).unwrap(),
+        None    => JsValue::NULL
+    }
+    
+}
