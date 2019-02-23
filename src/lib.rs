@@ -7,7 +7,7 @@ mod utils;
 use cfg_if::cfg_if;
 use wasm_bindgen::prelude::*;
 use pusoy_dos2::game::{Game, Hand};
-use pusoy_dos2::cards::{Suit, PlayedCard};
+use pusoy_dos2::cards::{PlayedCard};
 
 cfg_if! {
     // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -22,12 +22,6 @@ cfg_if! {
 #[wasm_bindgen]
 pub fn create_game(players: Box<[JsValue]>) -> Game {
     utils::set_panic_hook();
-    let suit_order = [
-        Suit::Clubs,
-        Suit::Hearts,
-        Suit::Diamonds,
-        Suit::Spades
-    ];
 
     let mut ids = vec!();
     for player in players.iter() {
@@ -38,7 +32,7 @@ pub fn create_game(players: Box<[JsValue]>) -> Game {
     let jokers = 0;
     let reversals = false;
 
-    Game::new(decks, jokers, &ids, suit_order, reversals)
+    Game::new(decks, jokers, &ids, reversals)
 }
 
 #[wasm_bindgen]
