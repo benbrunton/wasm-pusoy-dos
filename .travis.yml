@@ -18,6 +18,7 @@ matrix:
     script:
     - cargo generate --git . --name testing
     - mv Cargo.toml Cargo.toml.tmpl
+    - rm -rf .cargo
     - cd testing
     - rm -rf .cargo
     - wasm-pack build
