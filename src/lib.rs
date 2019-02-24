@@ -29,7 +29,7 @@ pub fn create_game(players: Box<[JsValue]>) -> Game {
     }
 
     let decks = 1;
-    let jokers = 0;
+    let jokers = 4;
     let reversals = false;
 
     Game::new(decks, jokers, &ids, reversals)
