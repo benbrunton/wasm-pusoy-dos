@@ -4,6 +4,7 @@ cache: cargo
 matrix:
   include:
   - rust: stable
+    name: build
     env: RUST_BACKTRACE=1
     addons:
       firefox: latest
@@ -63,7 +64,6 @@ matrix:
       console_error_panic_hook
     - cargo check --target wasm32-unknown-unknown --no-default-features --features
       console_error_panic_hook
-
 before_deploy: cd pkg
 deploy:
   provider: npm
@@ -74,3 +74,4 @@ deploy:
     tags: true
     branch: master
     rust: stable
+    name: build
