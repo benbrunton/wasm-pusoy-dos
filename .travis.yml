@@ -23,13 +23,9 @@ matrix:
     before_script:
     - rm -rf .cargo
     - "(test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)"
-    - (test -x $HOME/.cargo/bin/cargo-generate || cargo install --vers "^0.2" cargo-generate)
     - cargo install-update -a
     - rustup target add wasm32-unknown-unknown
     script:
-    - cargo generate --git . --name testing
-    - mv Cargo.toml Cargo.toml.tmpl
-    - cd testing
     - rm -rf .cargo
     - cargo check
     - cargo check --target wasm32-unknown-unknown
@@ -44,13 +40,9 @@ matrix:
     before_script:
     - rm -rf .cargo
     - "(test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)"
-    - (test -x $HOME/.cargo/bin/cargo-generate || cargo install --vers "^0.2" cargo-generate)
     - cargo install-update -a
     - rustup target add wasm32-unknown-unknown
     script:
-    - cargo generate --git . --name testing
-    - mv Cargo.toml Cargo.toml.tmpl
-    - cd testing
     - rm -rf .cargo
     - cargo check
     - cargo check --target wasm32-unknown-unknown
@@ -64,6 +56,7 @@ before_deploy: cd pkg
 deploy:
   provider: npm
   email: ben.b.brunton@gmail.com
+  skip_cleanup: true
   api_key:
     secure: eDDTogUEhKOBAaETPgzOIJD6lelvxs+o6BF30tLPmtSuxbMWfzfWA2gOzk/2c9mbuPPxfPBsUjzLNzHh2N8rV/adro+cJ/Hlb0pBzldWJjF7QmFbFPSeN9QBi5g0QGq6xdSBJEZTLJFb4VGF+3cElvDJtBJOeSiUJfAoicAYpZomWOaq0CSYr+ltZ6Nf/yxgAdG5JRXzW66A+KVA8NvxbgOFf5ozgjZposmU2D9C1xPyGj6fN0S/zKyysXfHhLdOU2Zzxuh6+5QuLoOMxnR30ZQb0xjR6Gr3yxD2nL3donHiGPC2CKgdc+AQRzb3W3z66fBhzoGAXJVLD491Ury+13N7R4Q5p3VC+62paDwN/p99/fYawg+MTl/ayLy9mjVFbb33gXJKjURIyQk6eM8PoIEsyhBZBU14DgcAmZ9JKYSQHZoqkqZ2rvzvrfADvltKyVgHMGfwXKULWKaIPt5UH9Rl9/RG/AWUtDQo9O0MtKcjE0mjgIs6lyoEarxQNiYq/wBG52Wme5Db8IXTww/ZU4ZjcunFD0P7RtZkLsH1QBJMPqCbQmsIrQEO0lP8IdP1uK+B0CYWnzCewBJ5Hoi/d4JuvQDBpQCs53LyfLkphzQXrLR62EwfbcLrXRvCDn1kpU1ZiDisZPutbHSq4uOfFzd/MTTcQ/o2SQbVYPwCT6I=
   on:
