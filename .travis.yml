@@ -12,6 +12,7 @@ matrix:
     before_script:
     - "(test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)"
     - cargo install-update -a
+    - rustup target add wasm32-unknown-unknown
     - curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s --
       -f
     script:
