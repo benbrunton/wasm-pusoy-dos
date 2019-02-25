@@ -16,17 +16,6 @@ matrix:
       -f
     script:
     - rm -rf .cargo
-    - wasm-pack build
-    - wasm-pack test --chrome --firefox --headless
-  - rust: beta
-    env: RUST_BACKTRACE=1
-    before_script:
-    - rm -rf .cargo
-    - "(test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)"
-    - cargo install-update -a
-    - rustup target add wasm32-unknown-unknown
-    script:
-    - rm -rf .cargo
     - cargo check
     - cargo check --target wasm32-unknown-unknown
     - cargo check                                 --no-default-features
@@ -35,7 +24,10 @@ matrix:
       console_error_panic_hook
     - cargo check --target wasm32-unknown-unknown --no-default-features --features
       console_error_panic_hook
-  - rust: stable
+
+    - wasm-pack build
+    - wasm-pack test --chrome --firefox --headless
+  - rust: beta
     env: RUST_BACKTRACE=1
     before_script:
     - rm -rf .cargo
