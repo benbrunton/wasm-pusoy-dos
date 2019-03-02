@@ -57,5 +57,21 @@ pub fn get_hand_type(js_hand: &JsValue) -> JsValue {
         Some(h) => JsValue::from_serde(&h).unwrap(),
         None    => JsValue::NULL
     }
-    
+}
+
+#[wasm_bindgen]
+pub fn submit_move(
+    game: &Game,
+    id: &str, 
+    js_hand: &JsValue) -> JsValue {
+
+    let cards: Vec<PlayedCard> = js_hand
+        .into_serde().unwrap();
+
+    let result = game.play_move(id, cards);
+
+    match result {
+        Ok(_) => JsValue::TRUE,
+        Err(a) => JsValue::from_serde(&a).unwrap()
+    }
 }
