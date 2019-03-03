@@ -53,10 +53,7 @@ pub fn get_hand_type(js_hand: &JsValue) -> JsValue {
 
     let hand = Hand::build(cards);
 
-    match hand {
-        Some(h) => JsValue::from_serde(&h).unwrap(),
-        None    => JsValue::NULL
-    }
+    convert_hand(hand)
 }
 
 #[wasm_bindgen]
@@ -73,5 +70,17 @@ pub fn submit_move(
     match result {
         Ok(_) => JsValue::TRUE,
         Err(a) => JsValue::from_serde(&a).unwrap()
+    }
+}
+
+#[wasm_bindgen]
+pub fn get_last_move(game: &Game) -> JsValue {
+    convert_hand(game.get_last_move())
+}
+
+fn convert_hand(hand: Option<Hand>) -> JsValue {
+    match hand {
+        Some(h) => JsValue::from_serde(&h).unwrap(),
+        None    => JsValue::NULL
     }
 }
