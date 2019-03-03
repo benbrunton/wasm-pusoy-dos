@@ -78,6 +78,11 @@ pub fn get_last_move(game: &Game) -> JsValue {
     convert_hand(game.get_last_move())
 }
 
+#[wasm_bindgen]
+pub fn get_next_player(game: &Game) -> String {
+    game.get_next_player().unwrap()
+}
+
 fn convert_hand(hand: Option<Hand>) -> JsValue {
     match hand {
         Some(h) => JsValue::from_serde(&h).unwrap(),
