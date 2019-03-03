@@ -61,7 +61,7 @@ pub fn get_hand_type(js_hand: &JsValue) -> JsValue {
 
 #[wasm_bindgen]
 pub fn submit_move(
-    game: &Game,
+    game: &mut Game,
     id: &str, 
     js_hand: &JsValue) -> JsValue {
 
