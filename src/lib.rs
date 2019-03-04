@@ -85,7 +85,9 @@ pub fn get_next_player(game: &Game) -> String {
 
 #[wasm_bindgen]
 pub fn get_cpu_move(game: &Game) -> JsValue {
-    convert_hand(game.get_ai_move()) 
+    let hand = game.get_ai_move().unwrap();
+
+    JsValue::from_serde(&hand).unwrap()
 }
 
 fn convert_hand(hand: Option<Hand>) -> JsValue {
