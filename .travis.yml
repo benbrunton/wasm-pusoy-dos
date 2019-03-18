@@ -25,7 +25,6 @@ matrix:
       console_error_panic_hook
     - cargo check --target wasm32-unknown-unknown --no-default-features --features
       console_error_panic_hook
-
     - wasm-pack build
     - wasm-pack test --chrome --firefox --headless
   - rust: beta
@@ -57,3 +56,6 @@ deploy:
     branch: master
     rust: stable
     name: build
+notifications:
+  slack:
+    secure: ByVMId+QR/V7yO4zQaPr8zr8zPZoRT5w5jdSxgiXsgGpflIx0t0yXlLutVaS5223g4tfJSf7V65WhACsrRWF3F9oZu34mvo84x+5ZsaRLJOovC32dqpXvH5DyamF+Hq1SdheGQVXvUk6RO57l2UNzuT2WlX7/6wUNj58PCEoZ3cFkAQVZ9P347nomahQDnx0RAJypTjBs37alRMqnpUYF68SeYdD13+ISLFqCMH3rEL2XkhEcO6JeLRwadmvTt9edc0DxAUY5qeDf2iRptec3jxGtcS+Sgisg2eYgT0YbONz5Ep9OZ2RjJr242NLRQ6cZMCUWl4Sxm7ojqaIIigUS9AHd5uzztK6RIrJfcHH6cXBCl9Gfhz+fdH0ERA8VhuOZ8f67fu7KNjdoy00spuvMN110P8CVbZvytWYEPpIoESUSxWlEsPGP/r8cGGX/zwzfCtq7J/6DWZijIwG+idi2giCzcx9MbMst5Hmx7+rBeVkYBnZCtutWVPSafcJjUChTUna16rnJhIbUh0kDDoFB1u1FeI8sx6+NFr1fCckroYSXzpeOZ8gj+raD1d5mlO3sGHhSCKmBy78BFveSdzpE+vBMGQN28H8Ma3LcrIZZIoAn+FGeXQZhC7UT+bSJp1dGYjzph+V8zV6nXWWAb8dkxVaZ9zx/BCUK0xIBR1QVxs=
