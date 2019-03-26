@@ -1,6 +1,6 @@
 [package]
 name = "wasm-pusoy-dos"
-version = "0.7.0"
+version = "0.7.1"
 authors = ["Ben Brunton <benbrunton@hotmail.com>"]
 
 [lib]
