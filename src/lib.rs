@@ -79,8 +79,11 @@ pub fn get_last_move(game: &Game) -> JsValue {
 }
 
 #[wasm_bindgen]
-pub fn get_next_player(game: &Game) -> String {
-    game.get_next_player().unwrap()
+pub fn get_next_player(game: &Game) -> JsValue {
+     match game.get_next_player() {
+        Some(p) => JsValue::from_serde(&p).unwrap(),
+        None    => JsValue::NULL
+    }
 }
 
 #[wasm_bindgen]
