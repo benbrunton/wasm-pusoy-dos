@@ -47,10 +47,8 @@ pub fn get_player(game: &Game, id: &str) -> JsValue {
 
 #[wasm_bindgen]
 pub fn get_hand_type(js_hand: &JsValue) -> JsValue {
-
     let cards: Vec<PlayedCard> = js_hand
         .into_serde().unwrap();
-
     let hand = Hand::build(cards);
 
     convert_hand(hand)
@@ -81,16 +79,27 @@ pub fn get_last_move(game: &Game) -> JsValue {
 #[wasm_bindgen]
 pub fn get_next_player(game: &Game) -> JsValue {
      match game.get_next_player() {
-        Some(p) => JsValue::from_serde(&p).unwrap(),
+        Some(h) => JsValue::from_serde(&h).unwrap(),
         None    => JsValue::NULL
     }
 }
 
 #[wasm_bindgen]
 pub fn get_cpu_move(game: &Game) -> JsValue {
-    let hand = game.get_ai_move().unwrap();
+    let id = game.get_next_player().expect("no next player");
+    suggest_move(game, &id)
+}
 
+#[wasm_bindgen]
+pub fn suggest_move(game: &Game, id: &str) -> JsValue {
+    let hand = game.suggest_move(id).unwrap();
     JsValue::from_serde(&hand).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn get_winners(game: &Game) -> JsValue {
+    let winners = game.get_winners();
+    JsValue::from_serde(&winners).unwrap()
 }
 
 fn convert_hand(hand: Option<Hand>) -> JsValue {
