@@ -20,7 +20,7 @@ cfg_if! {
 }
 
 #[wasm_bindgen]
-pub fn create_game(players: Box<[JsValue]>) -> Game {
+pub fn create_game(players: Box<[JsValue]>, decks: f64, jokers: f64) -> Game {
     utils::set_panic_hook();
 
     let mut ids = vec!();
@@ -28,11 +28,9 @@ pub fn create_game(players: Box<[JsValue]>) -> Game {
         ids.push(JsValue::into_serde(player).unwrap());
     }
 
-    let decks = 1;
-    let jokers = 4;
     let reversals = true;
 
-    Game::new(decks, jokers, &ids, reversals)
+    Game::new(decks as u8, jokers as u8, &ids, reversals)
 }
 
 #[wasm_bindgen]
