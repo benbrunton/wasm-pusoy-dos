@@ -6,8 +6,13 @@ mod utils;
 
 use cfg_if::cfg_if;
 use wasm_bindgen::prelude::*;
-use pusoy_dos2::game::{Game, Hand};
-use pusoy_dos2::cards::{PlayedCard};
+use pusoy_dos2::game::{
+    Game,
+    Hand,
+    Ruleset,
+    FlushPrecedence
+};
+use pusoy_dos2::cards::{PlayedCard, Suit};
 
 cfg_if! {
     // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -20,7 +25,12 @@ cfg_if! {
 }
 
 #[wasm_bindgen]
-pub fn create_game(players: Box<[JsValue]>, decks: f64, jokers: f64) -> Game {
+pub fn create_game(
+    players: Box<[JsValue]>,
+    decks: f64,
+    jokers: f64,
+    ruleset: &str
+) -> Game {
     utils::set_panic_hook();
 
     let mut ids = vec!();
@@ -28,9 +38,39 @@ pub fn create_game(players: Box<[JsValue]>, decks: f64, jokers: f64) -> Game {
         ids.push(JsValue::into_serde(player).unwrap());
     }
 
-    let reversals = true;
+    let (suit_order, ruleset) = if ruleset == "pickering" {
+        get_pickering_rules()
+    } else {
+        get_classic_rules()
+    };
+    Game::new(decks as u8, jokers as u8, &ids, suit_order, ruleset)
+}
 
-    Game::new(decks as u8, jokers as u8, &ids, reversals)
+fn get_pickering_rules() -> ([Suit; 4], Ruleset) {
+    ([
+        Suit::Clubs,
+        Suit::Hearts,
+        Suit::Diamonds,
+        Suit::Spades
+    ],
+    Ruleset {
+        reversals_enabled: true,
+        flush_precedence: FlushPrecedence::Rank
+    })
+}
+
+fn get_classic_rules() -> ([Suit; 4], Ruleset) {
+    ([
+        Suit::Clubs,
+        Suit::Spades,
+        Suit::Hearts,
+        Suit::Diamonds,
+    ],
+    Ruleset {
+        reversals_enabled: true,
+        flush_precedence: FlushPrecedence::Rank
+    })
+
 }
 
 #[wasm_bindgen]
