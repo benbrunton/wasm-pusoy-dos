@@ -140,6 +140,14 @@ pub fn get_winners(game: &Game) -> JsValue {
     JsValue::from_serde(&winners).unwrap()
 }
 
+#[wasm_bindgen]
+pub fn check_move(game: &Game, js_hand: &JsValue) -> JsValue {
+    let cards: Vec<PlayedCard> = js_hand
+        .into_serde().unwrap();
+    let result = game.check_move(cards);
+    JsValue::from_serde(&result).unwrap()
+}
+
 fn convert_hand(hand: Option<Hand>) -> JsValue {
     match hand {
         Some(h) => JsValue::from_serde(&h).unwrap(),
