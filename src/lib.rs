@@ -148,6 +148,11 @@ pub fn check_move(game: &Game, js_hand: &JsValue) -> JsValue {
     JsValue::from_serde(&result).unwrap()
 }
 
+#[wasm_bindgen]
+pub fn get_suit_order(game: &Game) -> JsValue {
+    JsValue::from_serde(&game.get_suit_order()).unwrap() 
+}
+
 fn convert_hand(hand: Option<Hand>) -> JsValue {
     match hand {
         Some(h) => JsValue::from_serde(&h).unwrap(),
