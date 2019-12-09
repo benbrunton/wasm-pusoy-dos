@@ -10,9 +10,11 @@ use pusoy_dos2::game::{
     Game,
     Hand,
     Ruleset,
-    FlushPrecedence
+    FlushPrecedence,
+    Player
 };
 use pusoy_dos2::cards::{PlayedCard, Suit};
+use pusoy_dos2::ai::get_move;
 
 cfg_if! {
     // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -132,6 +134,27 @@ pub fn get_cpu_move(game: &Game) -> JsValue {
 pub fn suggest_move(game: &Game, id: &str) -> JsValue {
     let hand = game.suggest_move(id).unwrap();
     JsValue::from_serde(&hand).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn suggest_move_multiplayer(
+    last_move: &JsValue,
+    player_hand: &JsValue,
+    ruleset: &str
+    ) -> JsValue {
+
+    let last_move: Vec<Hand> = last_move.into_serde().unwrap();
+    let player_hand: Vec<Card> = player_hand.into_serde().unwrap();
+    let player = Player::new("abc".to_string(), player_hand);
+    let (suit_order, ruleset) = if ruleset == "pickering" {
+        get_pickering_rules()
+    } else {
+        get_classic_rules()
+    };
+
+    let rank_order = []; // todo - set this up
+
+    get_move(last_move, player, suit_order, rank_order);
 }
 
 #[wasm_bindgen]
