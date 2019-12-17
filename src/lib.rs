@@ -13,7 +13,7 @@ use pusoy_dos2::game::{
     FlushPrecedence,
     Player
 };
-use pusoy_dos2::cards::{PlayedCard, Suit};
+use pusoy_dos2::cards::{PlayedCard, Card, Suit, Rank};
 use pusoy_dos2::ai::get_move;
 
 cfg_if! {
@@ -140,10 +140,11 @@ pub fn suggest_move(game: &Game, id: &str) -> JsValue {
 pub fn suggest_move_multiplayer(
     last_move: &JsValue,
     player_hand: &JsValue,
-    ruleset: &str
+    ruleset: &str,
+    rank_order: &JsValue,
     ) -> JsValue {
 
-    let last_move: Vec<Hand> = last_move.into_serde().unwrap();
+    let last_move: Hand = last_move.into_serde().unwrap();
     let player_hand: Vec<Card> = player_hand.into_serde().unwrap();
     let player = Player::new("abc".to_string(), player_hand);
     let (suit_order, ruleset) = if ruleset == "pickering" {
@@ -152,9 +153,10 @@ pub fn suggest_move_multiplayer(
         get_classic_rules()
     };
 
-    let rank_order = []; // todo - set this up
+    let ranks: [Rank; 13] = rank_order.into_serde().unwrap();
 
-    get_move(last_move, player, suit_order, rank_order);
+    let suggested_move = get_move(Some(last_move), Some(player), suit_order, ranks).unwrap();
+    JsValue::from_serde(&suggested_move).unwrap()
 }
 
 #[wasm_bindgen]
@@ -168,6 +170,36 @@ pub fn check_move(game: &Game, js_hand: &JsValue) -> JsValue {
     let cards: Vec<PlayedCard> = js_hand
         .into_serde().unwrap();
     let result = game.check_move(cards);
+    JsValue::from_serde(&result).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn check_move_multiplayer(
+    last_move: &JsValue,
+    player_hand: &JsValue,
+    ruleset: &str,
+    ranks: &JsValue,
+    suits: &JsValue,
+) -> JsValue {
+    let hand: Vec<PlayedCard> = player_hand
+        .into_serde().unwrap();
+    let last_move_option: Option<Hand> = last_move.into_serde().unwrap();
+    let flush_precedence = if ruleset == "pickering" {
+        FlushPrecedence::Rank
+    } else {
+        FlushPrecedence::Suit
+    };
+    let suit_order: [Suit; 4] = suits.into_serde().unwrap();
+    let rank_order: [Rank; 13] = ranks.into_serde().unwrap();
+
+    let result = Game::check_move_m(
+        hand,
+        last_move_option,
+        suit_order,
+        rank_order,
+        flush_precedence 
+    );
+
     JsValue::from_serde(&result).unwrap()
 }
 

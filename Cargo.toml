@@ -1,6 +1,6 @@
 [package]
 name = "wasm-pusoy-dos"
-version = "0.12.0"
+version = "0.14.0"
 authors = ["Ben Brunton <benbrunton@hotmail.com>"]
 
 [lib]
@@ -12,7 +12,7 @@ default = ["console_error_panic_hook"]
 [dependencies]
 cfg-if = "0.1.2"
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
-pusoy_dos2 = { version = "0.12.0"}
+pusoy_dos2 = { version = "0.15.0"}
 serde = "1.0.87"
 serde_derive = "1.0.87"
 
