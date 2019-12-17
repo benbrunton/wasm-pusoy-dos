@@ -6,9 +6,6 @@ matrix:
   - rust: stable
     name: build
     env: RUST_BACKTRACE=1
-    addons:
-      firefox: latest
-      chrome: stable
     before_script:
     - "(test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)"
     - cargo install-update -a
@@ -26,7 +23,6 @@ matrix:
     - cargo check --target wasm32-unknown-unknown --no-default-features --features
       console_error_panic_hook
     - wasm-pack build
-    - wasm-pack test --chrome --firefox --headless
   - rust: beta
     env: RUST_BACKTRACE=1
     before_script:
