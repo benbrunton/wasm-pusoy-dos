@@ -140,22 +140,17 @@ pub fn suggest_move(game: &Game, id: &str) -> JsValue {
 pub fn suggest_move_multiplayer(
     last_move: &JsValue,
     player_hand: &JsValue,
-    ruleset: &str,
+    suit_order: &JsValue,
     rank_order: &JsValue,
     ) -> JsValue {
 
     let last_move: Hand = last_move.into_serde().unwrap();
     let player_hand: Vec<Card> = player_hand.into_serde().unwrap();
     let player = Player::new("abc".to_string(), player_hand);
-    let (suit_order, ruleset) = if ruleset == "pickering" {
-        get_pickering_rules()
-    } else {
-        get_classic_rules()
-    };
-
+    let suits: [Suit; 4] = suit_order.into_serde().unwrap();
     let ranks: [Rank; 13] = rank_order.into_serde().unwrap();
 
-    let suggested_move = get_move(Some(last_move), Some(player), suit_order, ranks).unwrap();
+    let suggested_move = get_move(Some(last_move), Some(player), suits, ranks).unwrap();
     JsValue::from_serde(&suggested_move).unwrap()
 }
 
